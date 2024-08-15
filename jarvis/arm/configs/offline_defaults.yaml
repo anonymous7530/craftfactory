@@ -1,0 +1,65 @@
+defaults:
+  - policy: vpt_cursor
+  - _self_
+mode: train
+
+data:
+  dataset_dirs: 
+    - /path/to/datasetdir1
+    - /path/to/datasetdir2
+  enable_video: True
+  enable_action: True
+  enable_clip: False
+  enable_contractor_info: False
+  enable_condition_info: True
+  enable_padding: False
+  enable_cursor: False
+  decode_library: pyav
+
+  percent_datause: 1.0
+  composition_dropout: 0.6
+
+  frame_width: 640
+  frame_height: 360
+
+  sample_mode: uniform
+  samples_per_goal: 10000
+  win_len: 5
+  skip_frame: 1
+  split_ratio: 0.8
+  mode: 'raw' # Optional['raw', 'conditioned']
+
+optimize:
+  support: ray-lightning # Optional['lightning', 'ray-lightning']
+  logger: wandb
+  project_name: offline_defaults
+  experiment_name: null
+
+  devices: 4
+  precision: 16
+  accelerator: gpu
+  strategy: ddp
+  compile: False
+  accumulate_grad_batches: 8
+
+  tune_num_epochs: 5
+  max_epochs: 200
+  batch_size: 32
+  num_workers: 4
+  train_shuffle: True
+
+  weight_decay: 0.00
+  learning_rate: 0.0000181
+  # backbone_discount: 1
+  # frozen_backbone: False
+
+  # Note, the parameters are splited in to two parts: 'selected' and 'other'.
+  frozen_other: False
+  selected_keys: ['img_process', 'horizon_head']
+  selected_discount: 2
+  other_discount: 1
+
+  warmup_steps: 10
+  training_steps: 20000
+
+  resume: False

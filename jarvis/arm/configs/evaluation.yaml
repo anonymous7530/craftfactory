@@ -1,0 +1,36 @@
+
+defaults: 
+  - policy: vpt
+  - _self_
+
+mode: 'benchmark' # ['benchmark', 'collect']
+
+evaluation:
+  env: eval
+  num_workers: 1
+  num_gpus: 0
+  num_envs_per_worker: 1
+  num_cpus_per_worker: 5
+  num_gpus_per_worker: 0.33
+  rollout_fragment_length: 20
+  num_episodes_per_worker: 30
+  batch_mode: truncate_episodes
+  remote_worker_envs: False # async step envs within rollout worker
+  # remote_env_batch_wait_ms: 0
+  model: 
+    custom_model: minecraft_agent
+    custom_model_config:  
+      policy_config: ${policy}
+    custom_action_dist: hierarchical_action_dist
+
+others:
+  aliyun: 
+    name: 17691074061
+    remote_folder: Minecraft/Devs/Evaluation
+    enable: False
+
+collect:
+  root: trajectories
+  height: 360
+  width: 640
+  fps: 20
